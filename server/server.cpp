@@ -7,6 +7,7 @@
 #pragma comment(lib, "ws2_32.lib")
 SOCKADDR_IN addr_c = { 0 };
 int len = sizeof(addr_c);
+//通过数组来存储每个客户端的socket
 SOCKET clientSocket[1024];
 int count = 0;
 HANDLE mutex;
@@ -25,7 +26,7 @@ void connecting(void* param) {
             // 广播数据，实现多人群聊，向所有用户转发信息,
             // 加锁，防止每个用户的信息顺序不一致
             WaitForSingleObject(mutex, INFINITE);
-
+            //向每个客户端发送群聊信息
             for (int i = 0; i < count; ++i) {
                 send(clientSocket[i], buff, strlen(buff), NULL);
             }
